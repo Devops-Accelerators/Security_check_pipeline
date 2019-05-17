@@ -32,43 +32,12 @@ node {
     	mavenbuildexec "mvn build"
     }
     
-     stage ('Create Docker Image')
-    { 
-	     echo 'creating an image'
-	     docImg="${props['deploy.dockerhub']}/${props['deploy.microservice']}"
-             dockerImage = dockerexec "${docImg}"
-    }
+    stage ('Deploy to tomcat'){
     
-     stage ('Push Image to Docker Registry')
-    { 
-	     docker.withRegistry('https://registry.hub.docker.com','docker-credentials') {
-             dockerImage.push("${BUILD_NUMBER}")
-	     }
     }
+        
+    Stage ('DAST'){
     
-    stage ('Config helm')
-    { 
-    	
-	def filename = 'helmchart/values.yaml'
-	def data = readYaml file: filename
-	
-	data.image.repository = "${docImg}"
-	data.image.tag = "$BUILD_NUMBER"
-	data.service.appPort = "${props['deploy.port']}"
-	
-	sh "rm -f helmchart/values.yaml"
-	writeYaml file: filename, data: data
-	
-    }
-    stage ('deploy to cluster')
-    {
-    	//helmdeploy "${props['deploy.microservice']}"
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://104.198.157.239') {
-
-		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
-		helmdeploy "${props['deploy.microservice']}"
-	}
-	
     }
 	
 }
