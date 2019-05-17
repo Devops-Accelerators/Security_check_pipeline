@@ -20,19 +20,12 @@ node {
 	props = readProperties  file: """deploy.properties"""   
     }
     
-    stage ('Static Code Analysis')
-    { 
-	    sonarexec "${props['deploy.sonarqubeserver']}"
-    }
-    
-     stage ('Build and Unit Test Execution')
-    {
-          testexec "junit testing.."
-    }
-    
-     stage ('Code Coverage')
-    { 
-        codecoveragexec "${props['deploy.sonarqubeserver']}"
+    stage (Check-secrets){
+    	sh """
+	rm trufflehog || true
+	docker run docker run gesellix/trufflehog --json ${props['gitURL']} > trufflehog
+	cat trufflehog	
+	"""
     }
     stage ('create war')
     {
