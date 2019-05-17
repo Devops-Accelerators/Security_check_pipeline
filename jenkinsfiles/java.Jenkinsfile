@@ -23,7 +23,7 @@ node {
     stage (Check-secrets){
     	sh """
 	rm trufflehog || true
-	docker run docker run gesellix/trufflehog --json ${props['gitURL']} > trufflehog
+	docker run gesellix/trufflehog --json ${props['gitURL']} > trufflehog
 	cat trufflehog	
 	"""
     }
