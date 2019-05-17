@@ -7,7 +7,6 @@ def props='';
 def microserviceName;
 def port;
 def docImg;
-def gitUrl;
 def repoName;
 def credentials = 'docker-credentials';
 
@@ -20,10 +19,10 @@ node {
 	props = readProperties  file: """deploy.properties"""   
     }
     
-    stage (Check-secrets){
+    stage ('Check-secrets'){
     	sh """
 	rm trufflehog || true
-	docker run gesellix/trufflehog --json ${props['gitURL']} > trufflehog
+	docker run gesellix/trufflehog --json ${deploy.props['gitURL']} > trufflehog
 	cat trufflehog	
 	"""
     }
