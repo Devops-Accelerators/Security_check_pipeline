@@ -130,7 +130,7 @@ sonar.test.exclusions=src/test/java/com/mindtree/BasicApp"""
 					git pull
 					git commit -m "pipeline Script added by seed job" | true
 					git remote rm origin
-					git remote add origin https://${commit_username}:${git}@github.com/${commit_username}/${repoName.trim()}.git
+					git remote add origin https://${commit_username}:${git}@github.com/${gituserName}/${repoName.trim()}.git
 					git remote -v
 					git push -f origin master 
 					cd ..
