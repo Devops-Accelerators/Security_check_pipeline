@@ -31,7 +31,6 @@ node {
     stage ('Source Composition Analysis') 
     {
          sh 'rm owasp* || true'
-	 #can automate
          sh 'wget "https://raw.githubusercontent.com/Devops-Accelerators/Micro/master/owasp-dependency-check.sh" '
          sh 'chmod +x owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
