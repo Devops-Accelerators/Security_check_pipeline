@@ -24,8 +24,7 @@ node {
     	sh """
 	rm trufflehog || true
 	docker run gesellix/trufflehog --json ${props['deploy.gitURL']} > trufflehog
-	cat trufflehog	
-	"""
+	cat trufflehog"""
     }
     
     stage ('Source Composition Analysis') 
