@@ -85,7 +85,7 @@ node {
 	rm -rf tiocsscanner-namespace.yaml || true
 	cat >> tiocsscanner-namespace.yaml <<EOF
 apiVersion: v1
-  kind: Namespace
+kind: Namespace
   metadata: 
     name: tiocsscanner
     labels: 
