@@ -78,6 +78,103 @@ node {
 	}
 	
     }
+    
+    stage ('container-security-scan')
+    {
+    	sh """
+	rm -rf tiocsscanner-namespace.yaml || true
+	cat >> tiocsscanner-namespace.yaml <<EOF
+apiVersion: v1
+  kind: Namespace
+  metadata: 
+    name: tiocsscanner
+    labels: 
+      name: tiocsscanner"""
+      
+      sh "kubectl apply -f tiocsscanner-namespace.yaml"
+      sh """
+      rm tiocsscanner-deployment.yaml || true
+      cat >> tiocsscanner-deployment.yaml <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: tiocsscanner
+  namespace: tiocsscanner
+  labels:
+    app: tiocsscanner
+spec:
+  selector:
+    app: tiocsscanner
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5000
+--- 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: 
+  labels: 
+    app: tiocsscanner
+  name: tiocsscanner
+  namespace: tiocsscanner
+spec: 
+  minReadySeconds: 10
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: tiocsscanner
+  strategy: 
+    rollingUpdate: 
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template: 
+    metadata: 
+      labels: 
+        app: tiocsscanner
+    spec: 
+      containers: 
+        - image: "tenableio-docker-consec-local.jfrog.io/cs-scanner:latest"
+          name: tiocsscanner
+          resources: 
+            limits:
+              cpu: "3"
+            requests: 
+              cpu: "1.5"
+              memory: "2Gi"
+          args:
+           - import-registry							
+          env:
+            - name: TENABLE_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tio
+                  key: username
+            - name: TENABLE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tio
+                  key: password
+            - name: REGISTRY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: private-registry
+                  key: username
+            - name: REGISTRY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: private-registry
+                  key: password
+            - name: IMPORT_REPO_NAME
+              value: "<variable>"
+            - name: REGISTRY_URI
+              value: "<variable>" 
+            - name: IMPORT_INTERVAL_MINUTES
+              value: "<variable>" """
+	      sh "kubectl apply -f tiocsscanner-deployment.yaml"
+
+    }
 	
 }
 		
