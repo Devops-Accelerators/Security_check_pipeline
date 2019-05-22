@@ -84,6 +84,7 @@ node {
     	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.225.27.58') {
 		
 		sh """
+		rm tiocsscanner* || true
 		cat >> tiocsscanner-namespace.yaml <<EOF
 apiVersion: v1
 kind: Namespace
