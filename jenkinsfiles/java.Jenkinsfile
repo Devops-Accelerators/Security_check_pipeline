@@ -8,6 +8,7 @@ def microserviceName;
 def port;
 def docImg;
 def repoName;
+def endpoint = 'https://35.225.27.58'
 def credentials = 'docker-credentials';
 
 node {
@@ -71,7 +72,7 @@ node {
     stage ('deploy to cluster')
     {
     	//helmdeploy "${props['deploy.microservice']}"
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.225.27.58') {
+	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: $endpoint) {
 
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
