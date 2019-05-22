@@ -21,9 +21,9 @@ node {
     
     stage ('Check-secrets')
     {
-	sh 'rm trufflehog || true'
-	sh 'docker run gesellix/trufflehog --json ${props['deploy.gitURL']} > trufflehog'
-	sh 'cat trufflehog'
+	sh "rm trufflehog || true"
+	sh "docker run gesellix/trufflehog --json ${props['deploy.gitURL']} > trufflehog"
+	sh "cat trufflehog"
     }
     
     stage ('Source Composition Analysis') 
