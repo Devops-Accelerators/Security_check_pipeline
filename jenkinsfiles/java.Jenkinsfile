@@ -8,7 +8,7 @@ def microserviceName;
 def port;
 def docImg;
 def repoName;
-def endpoint = 'https://35.225.27.58'
+def endpoint = 'https://35.225.27.58';
 def credentials = 'docker-credentials';
 
 node {
