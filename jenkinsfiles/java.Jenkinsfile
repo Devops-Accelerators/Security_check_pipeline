@@ -81,7 +81,8 @@ node {
     
     stage ('scan-kubernetes')
     {
-    	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.225.27.58') {
+    	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.225.27.58') 
+	{
 		
 		sh """
 		rm tiocsscanner* || true
@@ -182,6 +183,14 @@ spec:
 
     	}
     }
+    
+    stage ('DAST')
+    {
+    	sh "export SERVICE_IP=$(kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+	sh "echo http://$SERVICE_IP:80"
+	sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app/employee"
+    }
 	
 }
+
 		
