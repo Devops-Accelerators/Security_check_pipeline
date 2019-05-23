@@ -123,7 +123,7 @@ spec:
     protocol: TCP
     port: 5000
 --- 
-apiVersion: extensions/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata: 
   labels: 
