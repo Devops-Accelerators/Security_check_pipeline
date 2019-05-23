@@ -97,13 +97,13 @@ metadata:
     		sh "kubectl apply -f tiocsscanner-namespace.yaml"
 		
 		sh """kubectl create secret generic tio --from-literal=username=$TENABLE_ACCESS_KEY \
---from-literal=password=$TENABLE_SECRET_KEY --namespace=tiocsscanner"""
+--from-literal=password=$TENABLE_SECRET_KEY --namespace=tiocsscanner || true"""
 		
 		sh """kubectl create secret generic private_registry --from-literal=username=$REGISTRY_USERNAME \
---from-literal=password=$REGISTRY_PASSWORD --namespace=tiocsscanner"""
+--from-literal=password=$REGISTRY_PASSWORD --namespace=tiocsscanner || true"""
 		
 		sh """kubectl create secret docker-registry jfrog-tio --docker-server=https://tenableio-docker-consec-local.jfrog.io \
---docker-username=$TENABLE_DOCKER_UNAME --docker-password=$TENABLE_DOCKER_PASS --namespace=tiocsscanner"""
+--docker-username=$TENABLE_DOCKER_UNAME --docker-password=$TENABLE_DOCKER_PASS --namespace=tiocsscanner || true"""
 		
 		sh """
 		cat >> tiocsscanner-deployment.yaml <<EOF
