@@ -54,6 +54,11 @@ node {
 	     }
     }
     
+    stage ('Scan-image')
+    {
+    	
+    }
+    
     stage ('Config helm')
     { 
     	
@@ -77,117 +82,6 @@ node {
 		helmdeploy "${props['deploy.microservice']}"
 	}
 	
-    }
-    
-    stage ('scan-kubernetes')
-    {
-    	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.232.13.35') 
-	{
-		
-		sh """
-		rm tiocsscanner* || true
-		cat >> tiocsscanner-namespace.yaml <<EOF
-apiVersion: v1
-kind: Namespace
-metadata: 
-  name: tiocsscanner
-  labels: 
-    name: tiocsscanner"""
-    
-    		sh "kubectl apply -f tiocsscanner-namespace.yaml"
-		
-		sh """kubectl create secret generic tio --from-literal=username=$TENABLE_ACCESS_KEY \
---from-literal=password=$TENABLE_SECRET_KEY --namespace=tiocsscanner || true"""
-		
-		/*sh """kubectl create secret generic private_registry --from-literal=username=$REGISTRY_USERNAME \
---from-literal=password=$REGISTRY_PASSWORD --namespace=tiocsscanner || true"""*/
-		
-		sh """kubectl create secret docker-registry jfrog-tio --docker-server=https://tenableio-docker-consec-local.jfrog.io \
---docker-username=$TENABLE_DOCKER_UNAME --docker-password=$TENABLE_DOCKER_PASS --namespace=tiocsscanner || true"""
-		
-		sh """
-		cat >> tiocsscanner-deployment.yaml <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: tiocsscanner
-  namespace: tiocsscanner
-  labels:
-    app: tiocsscanner
-spec:
-  selector:
-    app: tiocsscanner
-  type: ClusterIP
-  ports:
-  - name: http
-    protocol: TCP
-    port: 5000
---- 
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata: 
-  labels: 
-    app: tiocsscanner
-  name: tiocsscanner
-  namespace: tiocsscanner
-spec: 
-  minReadySeconds: 10
-  replicas: 1
-  selector: 
-    matchLabels: 
-      app: tiocsscanner
-  strategy: 
-    rollingUpdate: 
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
-  template: 
-    metadata: 
-      labels: 
-        app: tiocsscanner
-    spec: 
-      containers: 
-        - image: "tenableio-docker-consec-local.jfrog.io/cs-scanner:latest"
-          name: tiocsscanner
-          resources: 
-            limits:
-              cpu: "3"
-            requests: 
-              cpu: "1.5"
-              memory: "2Gi"
-          args:
-           - import-registry							
-          env:
-            - name: TENABLE_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: tio
-                  key: username
-            - name: TENABLE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: tio
-                  key: password
-            - name: REGISTRY_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: private-registry
-                  key: username
-            - name: REGISTRY_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: private-registry
-                  key: password
-            - name: IMPORT_REPO_NAME
-              value: "<variable>"
-            - name: REGISTRY_URI
-              value: "<variable>" 
-            - name: IMPORT_INTERVAL_MINUTES
-              value: 10"""
-	      
-	      sh "kubectl apply -f tiocsscanner-deployment.yaml"
-
-    	}
     }
     
   /*  stage ('DAST')
