@@ -19,7 +19,7 @@ node {
 	props = readProperties  file: """deploy.properties"""   
     }
     
-    stage ('Check-secrets')
+    /*stage ('Check-secrets')
     {
 	sh "rm trufflehog || true"
 	sh "docker run gesellix/trufflehog --json ${props['deploy.gitURL']} > trufflehog"
@@ -33,7 +33,7 @@ node {
          sh 'chmod +x owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
          sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
-    }
+    }*/
     
     stage ('create war')
     {
