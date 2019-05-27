@@ -73,7 +73,7 @@ node {
 	writeYaml file: filename, data: data
 	
     }
-    stage ('deploy to cluster')
+   /* stage ('deploy to cluster')
     {
     	//helmdeploy "${props['deploy.microservice']}"
 	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.232.13.35') {
@@ -82,14 +82,19 @@ node {
 		helmdeploy "${props['deploy.microservice']}"
 	}
 	
-    }
-    
-  /*  stage ('DAST')
-    {
-    	sh """export SERVICE_IP=$(kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"""
-	sh """echo http://$SERVICE_IP:80"""
-	sh """docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app/employee"""
     } */
+    
+    stage ('DAST')
+    {
+    	//sh """export SERVICE_IP=$(kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"""
+	//sh """echo http://$SERVICE_IP:80"""
+	//sh """docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app/employee"""
+	
+	sh """
+		export ARCHERY_HOST=http://ec2-99-81-179-32.eu-west-1.compute.amazonaws.com:8000
+		bash /var/lib/jenkins/archery/zapscan.sh
+	"""
+    } 
 	
 }
 
