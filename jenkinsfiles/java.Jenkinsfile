@@ -91,6 +91,7 @@ node {
 	//sh """docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app/employee"""
 	
 	sh """
+		docker run -d --name zapTest -p ${props['deploy.port']}:8080 $docImg
 		export ARCHERY_HOST=http://ec2-99-81-179-32.eu-west-1.compute.amazonaws.com:8000
 		bash /var/lib/jenkins/archery/zapscan.sh
 	"""
