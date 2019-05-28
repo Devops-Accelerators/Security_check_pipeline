@@ -93,6 +93,7 @@ node {
 	sh """
 		docker run -d --name zapTest -p ${props['deploy.port']}:8080 $docImg:$BUILD_NUMBER
 		export ARCHERY_HOST=http://ec2-99-81-179-32.eu-west-1.compute.amazonaws.com:8000
+		export TARGET_URL=""
 		bash /var/lib/jenkins/archery/zapscan.sh
 	"""
     } 
