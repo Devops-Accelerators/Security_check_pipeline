@@ -76,7 +76,7 @@ node {
     stage ('deploy to cluster')
     {
     	//helmdeploy "${props['deploy.microservice']}"
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.232.13.35') {
+	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://34.66.167.78') {
 
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
@@ -87,6 +87,7 @@ node {
     
     stage ('DAST')
     {
+    	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://34.66.167.78') {
     	//sh """export SERVICE_IP=$(kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"""
 	//sh """echo http://$SERVICE_IP:80"""
 	//sh """docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app/employee"""
@@ -98,6 +99,7 @@ node {
 		export TARGET_URL="${targetURL}/app/employee"
 		bash /var/lib/jenkins/archery/zapscan.sh
 	"""
+	}
     } 
 	
 }
