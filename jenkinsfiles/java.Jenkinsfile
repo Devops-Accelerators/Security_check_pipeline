@@ -80,7 +80,7 @@ node {
 
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
-		sh """sleep 30"""
+		sh """sleep 60"""
 	}
 	
     } 
