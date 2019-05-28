@@ -95,6 +95,7 @@ node {
 	def targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}'")
 	
 	sh """
+		echo ${targetURL}
 		export ARCHERY_HOST=http://ec2-63-33-228-104.eu-west-1.compute.amazonaws.com:8000
 		export TARGET_URL="${targetURL}/app/employee"
 		bash /var/lib/jenkins/archery/zapscan.sh
