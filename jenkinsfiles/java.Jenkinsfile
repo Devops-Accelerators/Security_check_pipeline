@@ -87,10 +87,6 @@ node {
     stage ('DAST')
     {
     	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://34.66.167.78') {
-    	//sh """export SERVICE_IP=$(kubectl get svc --namespace default micro -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"""
-	//sh """echo http://$SERVICE_IP:80"""
-	//sh """docker run -t owasp/zap2docker-stable zap-baseline.py -t http://$SERVICE_IP:80/app"""
-	
 	def targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default ${props['deploy.microservice']} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'")
 		
 	sh """
@@ -99,18 +95,6 @@ node {
 		export TARGET_URL='http://${targetURL}/app'
 		bash /var/lib/jenkins/archery/zapscan.sh || true
 	"""
-		/*sh """
-		echo ${targetURL}
-		rm -f vars.sh || true
-		cat >> vars.sh <<EOF 
-export ARCHERY_HOST=http://ec2-63-33-228-104.eu-west-1.compute.amazonaws.com:8000
-export TARGET_URL=${targetURL}/app"""
-	sh """
-		sleep 10
-		chmod +x vars.sh
-		./vars.sh
-		bash /var/lib/jenkins/archery/zapscan.sh || true
-	"""*/
 	}
     } 
 	
