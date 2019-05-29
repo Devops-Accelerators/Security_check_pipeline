@@ -96,7 +96,7 @@ node {
 	sh """
 		echo ${targetURL}
 		export ARCHERY_HOST=http://ec2-63-33-228-104.eu-west-1.compute.amazonaws.com:8000
-		export TARGET_URL='${targetURL}/app'
+		export TARGET_URL='http://${targetURL}/app'
 		bash /var/lib/jenkins/archery/zapscan.sh || true
 	"""
 		/*sh """
