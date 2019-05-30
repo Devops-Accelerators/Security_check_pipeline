@@ -61,6 +61,11 @@ node {
 			}
     }
     
+    stage ('SAST')
+    {
+    
+    }
+    
     stage ('create war')
     {
     	try{
@@ -102,11 +107,6 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    }
-    
-    stage ('Scan-image')
-    {
-    	
     }
     
     stage ('Config helm')
