@@ -4,6 +4,7 @@ def workspace;
 def branch;
 def dockerImage;
 def props='';
+def targetURL='';
 def microserviceName;
 def port;
 def docImg;
@@ -140,7 +141,7 @@ node {
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
 		sh """sleep 75"""
-		def targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default ${props['deploy.microservice']} -o 
+		targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default ${props['deploy.microservice']} -o 
 								jsonpath='{.status.loadBalancer.ingress[0].ip}'")
 	}
 	}
