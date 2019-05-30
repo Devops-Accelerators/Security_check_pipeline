@@ -140,6 +140,8 @@ node {
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
 		sh """sleep 75"""
+		def targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default ${props['deploy.microservice']} -o 
+								jsonpath='{.status.loadBalancer.ingress[0].ip}'")
 	}
 	}
 	     catch (error) {
@@ -154,8 +156,7 @@ node {
     stage ('DAST')
     {
     	try{
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://34.66.167.78') {
-	def targetURL = sh(returnStdout: true, script: "kubectl get svc --namespace default ${props['deploy.microservice']} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'")
+	
 		
 	sh """
 		echo ${targetURL}
@@ -163,7 +164,7 @@ node {
 		export TARGET_URL='http://${targetURL}/app'
 		bash /var/lib/jenkins/archery/zapscan.sh || true
 	"""
-	}
+	
 	}
 	     catch (error) {
 				currentBuild.result='FAILURE'
