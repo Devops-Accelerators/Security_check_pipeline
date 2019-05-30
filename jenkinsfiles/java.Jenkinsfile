@@ -5,7 +5,6 @@ def dockerImage;
 def props='';
 def targetURL='';
 def microserviceName;
-def port;
 def docImg;
 def repoName;
 def credentials = 'docker-credentials';
