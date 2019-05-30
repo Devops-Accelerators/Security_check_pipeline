@@ -62,6 +62,14 @@ node {
     
     stage ('SAST')
     {
+   	 steps
+    	{
+		sonarexec "${props['deploy.sonarqubeserver']}"
+    
+         	testexec "junit testing.."
+    	
+	        codecoveragexec "${props['deploy.sonarqubeserver']}"
+    	}
     
     }
     
