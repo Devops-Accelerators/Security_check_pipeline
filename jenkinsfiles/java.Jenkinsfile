@@ -147,7 +147,7 @@ node {
     {
     	try{
 	//helmdeploy "${props['deploy.microservice']}"
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.202.84.245') {
+	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.222.150.230') {
 
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
