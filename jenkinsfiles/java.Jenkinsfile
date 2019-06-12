@@ -64,10 +64,6 @@ node {
     {
 	    try{
 		sonarexec "${props['deploy.sonarqubeserver']}"
-    
-         	testexec "junit testing.."
-    	
-	        codecoveragexec "${props['deploy.sonarqubeserver']}"
 		 }
 	 catch (error) {
 				currentBuild.result='FAILURE'
