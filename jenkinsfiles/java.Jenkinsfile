@@ -74,7 +74,7 @@ node {
     
     }
     
-    stage("Quality Gate Check")
+    stage ('Quality Gate Check')
     {           
         timeout(time: 1, unit: 'HOURS') 
         {  
