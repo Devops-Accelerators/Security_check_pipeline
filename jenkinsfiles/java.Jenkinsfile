@@ -48,7 +48,7 @@ node {
     {
          try{
 	 
-	 snykSecurity projectName: "${props['deploy.microservice']}", severity: 'high', snykInstallation: '', snykTokenId: 'snyk'
+	snykSecurity projectName: "${props['deploy.microservice']}", severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk'
 	 
 	 }
 	 catch (error) {
