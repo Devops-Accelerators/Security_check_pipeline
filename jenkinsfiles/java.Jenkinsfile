@@ -59,7 +59,7 @@ node {
 			}
     }
     
-    stage ('SAST')
+    /*stage ('SAST')
     {
 	    try{
 		sonarexec "${props['deploy.sonarqubeserver']}"
@@ -70,8 +70,8 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
+    } */
     
-    }
     stage ('create war')
     {
     	try{
