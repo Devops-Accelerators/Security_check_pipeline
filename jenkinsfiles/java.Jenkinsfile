@@ -47,10 +47,9 @@ node {
     stage ('Source Composition Analysis') 
     {
          try{
-	 sh 'rm owasp* || true'
-         sh 'wget "https://raw.githubusercontent.com/Devops-Accelerators/Micro/master/owasp-dependency-check.sh" '
-         sh 'chmod +x owasp-dependency-check.sh'
-         sh 'bash owasp-dependency-check.sh'
+	 
+	 snykSecurity projectName: "${props['deploy.microservice']}", severity: 'high', snykInstallation: '', snykTokenId: 'snyk'
+	 
 	 }
 	 catch (error) {
 				currentBuild.result='FAILURE'
