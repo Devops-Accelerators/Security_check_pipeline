@@ -33,7 +33,7 @@ node {
     {
 	try{
 	sh "rm trufflehog || true"
-	sh "docker run gesellix/trufflehog --json ${props['deploy.gitURL']} > trufflehog"
+	sh "docker run gesellix/trufflehog --json --regex ${props['deploy.gitURL']} > trufflehog"
 	sh "cat trufflehog"
 	}
 	catch (error) {
