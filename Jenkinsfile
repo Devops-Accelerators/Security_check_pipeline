@@ -75,7 +75,6 @@ node {
 			withCredentials([string(credentialsId:"${props['github.password']}", variable: 'git'),
 			usernameColonPassword(credentialsId: 'jenkinsadminCredentials', variable: 'jenkinsAdminCredentials')]) 
 					{
-					//rm -rf ${repoName.trim()}
 					
 					sh """rm -rf ${repoName.trim()} 
 					rm -rf ${microserviceName.trim()}
@@ -89,7 +88,6 @@ node {
 					rm -f ${repoName.trim()}/deploy.properties
 					rm -f ${repoName}/Dockerfile
 					rm -f ${repoName.trim()}/sonar-project.properties
-					rm -f ${repoName.trim()}/date.txt
 					echo "second step is done"
 					
 					cd ${repoName.trim()}
@@ -118,8 +116,6 @@ sonar.test.exclusions=src/test/java/com/mindtree/BasicApp"""
 					cp -f ../jenkinsfiles/java.Jenkinsfile Jenkinsfile
 					rm -rf helmchart
 					cp -f ../Dockerfile Dockerfile
-					cp -f ../context.xml context.xml
-					cp -f ../tomcat-users.xml tomcat-users.xml
 					
 					echo "copy helm basic template"
 					sed -i "s/microservicename/${microserviceName}/g" ../java-micro/Chart.yaml
