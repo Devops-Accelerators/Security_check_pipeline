@@ -192,4 +192,7 @@ def notifyBuild(String buildStatus, String buildFailedAt, String commit_Email, S
 	body: details, 
 	subject: """${buildStatus}: [${BUILD_NUMBER}] ${buildFailedAt}""", 
 	to: """${commit_Email}"""
+	
+	slackSend message: """Build Result: ${buildStatus} \n ${BUILD_URL} """
+
 }
