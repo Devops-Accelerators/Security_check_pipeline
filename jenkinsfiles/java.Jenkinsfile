@@ -72,7 +72,7 @@ node {
 			}
     }
     
-    stage ('create war')
+  /*  stage ('create war')
     {
     	try{
 	mavenbuildexec "mvn build"
@@ -177,7 +177,7 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    } 
+    } */
     notifyBuild(currentBuild.result, "", commit_Email, "Build successful.",props['deploy.archery'])
 	
 }
