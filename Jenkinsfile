@@ -168,7 +168,7 @@ def notifyBuild(String buildStatus, String buildFailedAt, String commit_Email, S
 	subject: """${buildStatus}: Job ${microserviceName} [${BUILD_NUMBER}] ${buildFailedAt}""", 
 	to: """${commit_Email}"""
 	
-	slackSend message: "Build Result: ${BUILD_URL}"
+	slackSend message: "Build Result: ${buildStatus} \n ${BUILD_URL} "
 }
 
 def createpipelinejob(String jobName, String gitURL)
