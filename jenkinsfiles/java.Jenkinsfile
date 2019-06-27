@@ -101,6 +101,7 @@ node {
     }
     stage ('Scan Container Images')
     {
+    	sh 'rm anchore_images || true'
     	sh 'echo "docker.io/${docImg} 'pwd'/Dockerfile" > anchore_images'
 	anchore 'anchore_images' 
     }
@@ -118,13 +119,6 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    }
-    
-    Stage (Clean Up)
-    {
-    	sh """
-	for i in "cat anchore_images | awk '{print $1}'";do docker rmi $i;done
-	"""
     }
     
    /* stage ('Config helm')
