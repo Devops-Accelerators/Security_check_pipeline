@@ -29,7 +29,7 @@ node {
 			}
     }
     
-    stage ('Check-secrets')
+   /* stage ('Check-secrets')
     {
 	try{
 	sh "rm trufflehog || true"
@@ -70,7 +70,7 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    }
+    } */
     
     stage ('create war')
     {
@@ -102,7 +102,7 @@ node {
     stage ('Scan Container Images')
     {
     	sh 'rm anchore_images || true'
-    	sh 'echo "docker.io/${docImg} 'pwd'/Dockerfile" > anchore_images'
+    	sh """echo "docker.io/${docImg} 'pwd'/Dockerfile" > anchore_images"""
 	anchore 'anchore_images' 
     }
     
