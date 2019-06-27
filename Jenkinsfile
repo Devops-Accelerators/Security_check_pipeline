@@ -98,7 +98,7 @@ deploy.port=${port.trim()}
 deploy.sonarqubeserver=${props['sonar.server']}
 deploy.dockerhub=${props['dockerhub.name']}
 deploy.gitURL=${apiRepoURL.trim()}
-deploy.archery=https://ec2-63-33-228-104.eu-west-1.compute.amazonaws.com"""
+deploy.archery=${props['archery.server']}"""
 					sh """
 					cd ${repoName.trim()}
 					#Create sonar.properties file
