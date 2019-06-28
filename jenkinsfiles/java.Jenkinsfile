@@ -99,15 +99,8 @@ node {
 				throw error
 			}
     }
-    stage ('Scan Container Images')
-    {
-	
-	sh 'rm anchore_images || true'
-    	sh """echo "docker.io/${docImg}:${BUILD_NUMBER} `pwd`/Dockerfile" > anchore_images"""
-	anchore 'anchore_images' 
-    }
     
-     stage ('Push Image to Docker Registry')
+    stage ('Push Image to Docker Registry')
     { 
 	     try{
 	     docker.withRegistry('https://registry.hub.docker.com','docker-credentials') {
@@ -120,6 +113,14 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
+    }
+    
+    stage ('Scan Container Images')
+    {
+	
+	sh 'rm anchore_images || true'
+    	sh """echo "${docImg}:${BUILD_NUMBER} `pwd`/Dockerfile" > anchore_images"""
+	anchore 'anchore_images' 
     }
     
    /* stage ('Config helm')
