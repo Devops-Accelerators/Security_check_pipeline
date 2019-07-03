@@ -29,7 +29,7 @@ node {
 			}
     }
     
-   /* stage ('Check-secrets')
+    stage ('Check-secrets')
     {
 	try{
 	sh "rm trufflehog || true"
@@ -70,7 +70,7 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    } */
+    } 
     
     stage ('create war')
     {
