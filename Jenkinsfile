@@ -154,6 +154,19 @@ sonar.test.exclusions=src/test/java/com/mindtree/BasicApp"""
 			}
 	}
 	notifyBuild(currentBuild.result, "", commit_Email, """Version tag created with name branch \n Build successful. """)
+	
+	stage ('Delete seed job'){
+	
+		try{
+			${microserviceName}.delete();
+		}
+		catch (error) {
+				currentBuild.result='FAILURE'
+				notifyBuild(currentBuild.result, "At Stage Execute seed job", commit_Email, "")
+				echo """${error.getMessage()}"""
+				throw error
+			}
+	}
 }
 
 def notifyBuild(String buildStatus, String buildFailedAt, String commit_Email, String bodyDetails) 
