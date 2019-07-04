@@ -36,7 +36,7 @@ node {
 	sh "docker run gesellix/trufflehog --json --regex ${props['deploy.gitURL']} > trufflehog"
 	sh "cat trufflehog"
 	
-	File file = new File("trufflehog");
+	File file = new File("./trufflehog");
 	if (file.length() == 0)
 	{
 		sh "echo Trufflehog didn't find any secrets. We are good to go !"
