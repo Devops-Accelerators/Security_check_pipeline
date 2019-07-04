@@ -39,7 +39,7 @@ node {
 	File file = new File("trufflehog");
 	if (file.length() == 0)
 	{
-		sh 'echo "Trufflehog didn't find any secrets. We are good to go !"' 
+		sh '''echo "Trufflehog didn't find any secrets. We are good to go !" '''
 	}
 	}
 	catch (error) {
