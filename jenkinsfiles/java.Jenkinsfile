@@ -136,7 +136,7 @@ node {
 		}
     }
     
-   /* stage ('Config helm')
+    stage ('Config helm')
     { 
     	
 	try{
@@ -162,7 +162,7 @@ node {
     {
     	try{
 	//helmdeploy "${props['deploy.microservice']}"
-	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://23.236.52.69') {
+	withKubeConfig(credentialsId: 'kubernetes-creds', serverUrl: 'https://35.225.92.51') {
 
 		sh """ helm delete --purge ${props['deploy.microservice']} | true"""
 		helmdeploy "${props['deploy.microservice']}"
@@ -198,7 +198,7 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 			}
-    } */
+    } 
     notifyBuild(currentBuild.result, "", commit_Email, "Build successful.",props['deploy.archery'])
 	
 }
