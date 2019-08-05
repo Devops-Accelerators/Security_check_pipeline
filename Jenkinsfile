@@ -153,7 +153,7 @@ sonar.test.exclusions=src/test/java/com/mindtree/BasicApp"""
 				throw error
 			}
 	}
-	stage ('Delete seed job'){
+	/*stage ('Delete seed job'){
 	
 		try{
 			${microserviceName}.delete();
@@ -164,7 +164,7 @@ sonar.test.exclusions=src/test/java/com/mindtree/BasicApp"""
 				echo """${error.getMessage()}"""
 				throw error
 			}
-	}
+	}*/
 	notifyBuild(currentBuild.result, "", commit_Email, """Version tag created with name branch \n Build successful. """)
 }
 
