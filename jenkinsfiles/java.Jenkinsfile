@@ -111,7 +111,7 @@ node {
 	try{
 	
 	sh 'rm anchore_images || true'
-    	sh """echo "docker.io/${docImg}" > anchore_images"""
+    	sh """echo "${docImg}:${BUILD_NUMBER} `pwd`/Dockerfile" > anchore_images"""
 	anchore 'anchore_images'
 	
 	}
