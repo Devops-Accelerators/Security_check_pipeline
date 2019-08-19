@@ -125,7 +125,7 @@ node {
     {
 	try{
 	sh 'rm anchore_images || true'
-    	sh """echo "${docImg}:${BUILD_NUMBER} > anchore_images"""
+    	sh """echo "${docImg}:${BUILD_NUMBER}" > anchore_images"""
 	anchore 'anchore_images'
 	}
 	catch (error) {
