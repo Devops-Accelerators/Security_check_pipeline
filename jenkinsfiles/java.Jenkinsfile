@@ -106,6 +106,22 @@ node {
 			}
     }
     
+    
+    stage ('Push Image to Docker Registry')
+    { 
+	     try{
+	     docker.withRegistry('https://registry.hub.docker.com','docker-credentials') {
+             dockerImage.push("${BUILD_NUMBER}")
+	     }
+	     }
+	     catch (error) {
+				currentBuild.result='FAILURE'
+				notifyBuild(currentBuild.result, "At Stage Push Image to Docker Registry", commit_Email, "",props['deploy.archery'])
+				echo """${error.getMessage()}"""
+				throw error
+			}
+    }
+    
      stage ('Scan Container Images')
     {
 	try{
@@ -121,21 +137,6 @@ node {
 				echo """${error.getMessage()}"""
 				throw error
 		}
-    }
-    
-    stage ('Push Image to Docker Registry')
-    { 
-	     try{
-	     docker.withRegistry('https://registry.hub.docker.com','docker-credentials') {
-             dockerImage.push("${BUILD_NUMBER}")
-	     }
-	     }
-	     catch (error) {
-				currentBuild.result='FAILURE'
-				notifyBuild(currentBuild.result, "At Stage Push Image to Docker Registry", commit_Email, "",props['deploy.archery'])
-				echo """${error.getMessage()}"""
-				throw error
-			}
     }
     
     stage ('Config helm')
